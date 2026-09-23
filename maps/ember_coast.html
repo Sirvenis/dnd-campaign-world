@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ember Coast — Region Map of Aethermere</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background: #1a1a2e;
+    font-family: 'Georgia', serif;
+    color: #e0d8c8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+  h1 {
+    font-size: 28px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #c4a265;
+    text-shadow: 0 0 20px rgba(196, 162, 101, 0.3);
+    margin: 20px 0 5px 0;
+  }
+  .subtitle {
+    font-size: 14px;
+    color: #887755;
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+  }
+  .map-container {
+    position: relative;
+    background: #0d0d1a;
+    border: 2px solid #3a3a5a;
+    border-radius: 8px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.8);
+    overflow: hidden;
+  }
+  svg {
+    display: block;
+  }
+  .legend {
+    background: #12122a;
+    border: 1px solid #3a3a5a;
+    border-radius: 6px;
+    padding: 15px 25px;
+    margin: 15px 0 30px 0;
+    font-size: 13px;
+  }
+  .legend-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 8px 20px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .legend-swatch {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .footer {
+    font-size: 11px;
+    color: #555;
+    margin-bottom: 20px;
+  }
+</style>
+</head>
+<body>
+
+<h1>The Ember Coast</h1>
+<div class="subtitle">Region Map — Aethermere · The World of Dead Gods</div>
+
+<div class="map-container">
+<svg width="1000" height="700" viewBox="0 0 1000 700" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- ========== DEFS ========== -->
+  <defs>
+    <!-- Ocean pattern -->
+    <pattern id="oceanPattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <rect width="20" height="20" fill="#0a1929"/>
+      <path d="M0,10 Q5,7 10,10 T20,10" fill="none" stroke="#152840" stroke-width="0.8"/>
+    </pattern>
+
+    <!-- Shatterlands crack pattern -->
+    <pattern id="shatterPattern" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse">
+      <rect width="30" height="30" fill="#2a1510"/>
+      <path d="M0,15 L8,8 L15,18 L22,5 L30,15" fill="none" stroke="#4a2515" stroke-width="0.6"/>
+      <path d="M5,0 L12,10 L18,3 L25,12 L30,0" fill="none" stroke="#3a1a10" stroke-width="0.4"/>
+    </pattern>
+
+    <!-- Residuum glow -->
+    <radialGradient id="residuumGlow">
+      <stop offset="0%" stop-color="#a8d4ff" stop-opacity="0.4"/>
+      <stop offset="50%" stop-color="#6090d0" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#000020" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- City glow -->
+    <radialGradient id="cityGlow">
+      <stop offset="0%" stop-color="#e8c060" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Arrowhead for travel routes -->
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#5a4a30"/>
+    </marker>
+  </defs>
+
+  <!-- ========== OCEAN (East) ========== -->
+  <rect x="0" y="0" width="1000" height="700" fill="url(#oceanPattern)"/>
+  
+  <!-- Ocean depth shading -->
+  <path d="M 700,0 L 1000,0 L 1000,700 L 700,700 Z" fill="#0a1929" opacity="0.3"/>
+  
+  <!-- Ocean labels -->
+  <text x="850" y="100" font-size="16" fill="#2a4060" font-style="italic" text-anchor="middle" letter-spacing="3">THE WIDE SEA</text>
+  <text x="880" y="400" font-size="12" fill="#1a3050" font-style="italic" text-anchor="middle">~ unknown waters ~</text>
+
+  <!-- ========== MAIN LANDMASS ========== -->
+  <!-- Ember Coast land outline (west side, coastline on the east) -->
+  <path d="M 50,50 
+           L 350,30 
+           Q 450,35 500,60
+           Q 550,50 600,55
+           L 650,70
+           Q 680,80 690,110
+           Q 695,140 685,170
+           L 680,200
+           Q 685,240 670,270
+           Q 675,300 665,330
+           Q 670,360 660,390
+           L 655,420
+           Q 650,450 660,480
+           Q 655,510 645,540
+           Q 650,570 640,600
+           L 635,650
+           Q 620,675 600,670
+           L 400,665
+           Q 300,660 200,665
+           L 60,670
+           Q 40,665 45,640
+           L 50,600
+           Q 45,560 55,520
+           L 50,480
+           Q 55,440 48,400
+           L 52,360
+           Q 48,320 55,280
+           L 50,240
+           Q 45,200 52,160
+           L 48,120
+           Q 45,80 50,50 Z" 
+        fill="#1a2a18" stroke="#3a4a30" stroke-width="1.5"/>
+
+  <!-- ========== TERRAIN ZONES ========== -->
+
+  <!-- The Pale Reach (North - mountains, ash-white) -->
+  <path d="M 50,50 L 350,30 Q 450,35 500,60 Q 480,100 400,110 L 300,105 L 200,100 L 100,95 L 50,90 Z" 
+        fill="#4a4a50" opacity="0.7" stroke="#5a5a65" stroke-width="1"/>
+  <!-- Mountain icons -->
+  <g fill="#6a6a75" opacity="0.8">
+    <polygon points="100,55 115,30 130,55"/>
+    <polygon points="150,50 165,25 180,50"/>
+    <polygon points="200,48 215,23 230,48"/>
+    <polygon points="250,45 265,20 280,45"/>
+    <polygon points="300,42 315,22 330,42"/>
+    <polygon points="350,40 365,25 380,40"/>
+  </g>
+  <!-- Ash effect -->
+  <rect x="50" y="30" width="450" height="80" fill="#a0a0a8" opacity="0.08"/>
+  <text x="250" y="85" font-size="14" fill="#8888aa" font-style="italic" text-anchor="middle" letter-spacing="2">THE PALE REACH</text>
+  <text x="250" y="98" font-size="10" fill="#6a6a8a" text-anchor="middle">ash-covered mountains · monastic orders</text>
+
+  <!-- The Shatterlands (West - cracked, dangerous) -->
+  <path d="M 45,90 L 200,100 L 300,105 L 280,200 L 270,300 L 260,400 L 250,500 L 240,600 L 200,665 L 60,670 Q 40,665 45,640 L 50,600 Q 45,560 55,520 L 50,480 Q 55,440 48,400 L 52,360 Q 48,320 55,280 L 50,240 Q 45,200 52,160 L 48,120 Q 45,80 50,50 Z"
+        fill="url(#shatterPattern)" opacity="0.9" stroke="#3a1a10" stroke-width="1"/>
+  <text x="160" y="200" font-size="16" fill="#6a3520" font-style="italic" text-anchor="middle" letter-spacing="3" transform="rotate(-15, 160, 200)">THE SHATTERLANDS</text>
+  <text x="160" y="220" font-size="10" fill="#4a2515" text-anchor="middle">unstable terrain · ruins · monsters · rich residuum</text>
+  
+  <!-- Crack lines in Shatterlands -->
+  <g stroke="#5a2a15" stroke-width="0.8" fill="none" opacity="0.6">
+    <path d="M 80,150 Q 120,180 100,220 Q 130,260 90,310"/>
+    <path d="M 150,130 Q 180,170 160,230 Q 190,280 170,340"/>
+    <path d="M 200,280 Q 230,320 210,380 Q 240,430 220,490"/>
+    <path d="M 100,400 Q 140,440 120,500 Q 150,550 130,610"/>
+    <path d="M 50,250 Q 80,290 60,350 Q 90,400 70,460"/>
+  </g>
+
+  <!-- Residuum deposits (glowing areas in Shatterlands) -->
+  <circle cx="120" cy="280" r="40" fill="url(#residuumGlow)"/>
+  <circle cx="180" cy="450" r="35" fill="url(#residuumGlow)"/>
+  <circle cx="90" cy="500" r="30" fill="url(#residuumGlow)"/>
+
+  <!-- The Drowned Temple (in Shatterlands, residuum lake) -->
+  <ellipse cx="150" cy="350" rx="25" ry="18" fill="#1a3050" stroke="#3a6080" stroke-width="1"/>
+  <text x="150" y="355" font-size="8" fill="#5a8aaa" text-anchor="middle"> temple</text>
+  <line x1="150" y1="320" x2="150" y2="332" stroke="#5a8aaa" stroke-width="1"/>
+  <text x="150" y="315" font-size="9" fill="#6a9aba" text-anchor="middle" font-weight="bold">Drowned Temple</text>
+
+  <!-- Central Plains (between Shatterlands and coast) -->
+  <path d="M 280,110 L 500,60 Q 550,80 580,120 Q 590,200 570,300 Q 560,400 550,500 Q 540,550 520,600 L 500,650 Q 480,660 450,655 L 250,660 L 260,600 L 270,500 L 280,400 L 290,300 L 300,200 Z"
+        fill="#1a2a14" opacity="0.8" stroke="#2a3a20" stroke-width="0.5"/>
+  <!-- Grassland texture -->
+  <g stroke="#2a3a20" stroke-width="0.5" opacity="0.3">
+    <line x1="350" y1="150" x2="360" y2="155"/>
+    <line x1="380" y1="180" x2="390" y2="185"/>
+    <line x1="340" y1="220" x2="350" y2="225"/>
+    <line x1="400" y1="250" x2="410" y2="255"/>
+    <line x1="370" y1="300" x2="380" y2="305"/>
+    <line x1="420" y1="330" x2="430" y2="335"/>
+    <line x1="390" y1="380" x2="400" y2="385"/>
+    <line x1="440" y1="410" x2="450" y2="415"/>
+    <line x1="360" y1="450" x2="370" y2="455"/>
+    <line x1="410" y1="480" x2="420" y2="485"/>
+    <line x1="380" y1="520" x2="390" y2="525"/>
+    <line x1="430" y1="550" x2="440" y2="555"/>
+    <line x1="350" y1="580" x2="360" y2="585"/>
+  </g>
+  <text x="380" y="300" font-size="12" fill="#3a5a25" font-style="italic" text-anchor="middle" opacity="0.7">Embermoor Plains</text>
+
+  <!-- The Saltmarch (South - wetlands) -->
+  <path d="M 450,655 Q 480,660 500,650 L 640,600 Q 650,570 660,540 Q 655,510 660,480 L 620,490 Q 580,500 550,520 Q 520,540 490,560 Q 470,600 450,655 Z"
+        fill="#1a2a28" opacity="0.8" stroke="#2a4a40" stroke-width="0.8"/>
+  <!-- Wetland texture -->
+  <g fill="#2a4a40" opacity="0.4">
+    <ellipse cx="520" cy="570" rx="8" ry="4"/>
+    <ellipse cx="560" cy="580" rx="10" ry="5"/>
+    <ellipse cx="600" cy="560" rx="7" ry="3"/>
+    <ellipse cx="540" cy="610" rx="9" ry="4"/>
+    <ellipse cx="580" cy="620" rx="8" ry="4"/>
+    <ellipse cx="620" cy="540" rx="6" ry="3"/>
+  </g>
+  <text x="560" y="590" font-size="12" fill="#3a6a55" font-style="italic" text-anchor="middle">THE SALTMARCH</text>
+  <text x="560" y="605" font-size="9" fill="#2a5a40" text-anchor="middle">wetlands · fishing villages · ancestor spirits</text>
+
+  <!-- ========== KEY LOCATIONS ========== -->
+
+  <!-- Hallow's Reach (major city, east coast) -->
+  <circle cx="590" cy="280" r="50" fill="url(#cityGlow)"/>
+  <rect x="575" y="265" width="30" height="20" fill="#5a4530" stroke="#8a6a40" stroke-width="1.5" rx="2"/>
+  <rect x="580" y="260" width="20" height="8" fill="#6a5035" stroke="#8a6a40" stroke-width="1" rx="1"/>
+  <text x="590" y="245" font-size="14" fill="#c4a265" text-anchor="middle" font-weight="bold">Hallow's Reach</text>
+  <text x="590" y="300" font-size="9" fill="#8a7550" text-anchor="middle">pop. 40,000 · the Godvein</text>
+  <text x="590" y="312" font-size="8" fill="#6a5a3a" text-anchor="middle">seat of the Hallow Compact</text>
+
+  <!-- The Godvein (mine entrance, near Hallow's Reach) -->
+  <circle cx="530" cy="260" r="8" fill="#2a2a2a" stroke="#6090d0" stroke-width="1.5"/>
+  <circle cx="530" cy="260" r="20" fill="url(#residuumGlow)" opacity="0.6"/>
+  <text x="530" y="240" font-size="10" fill="#7aa0d0" text-anchor="middle" font-weight="bold">The Godvein</text>
+  <text x="530" y="228" font-size="8" fill="#5a80b0" text-anchor="middle">richest residuum mine</text>
+
+  <!-- Emberwood Village (frontier town) -->
+  <rect x="290" y="175" width="18" height="14" fill="#4a3a25" stroke="#7a5a35" stroke-width="1" rx="1"/>
+  <rect x="295" y="172" width="8" height="5" fill="#5a4530" rx="1"/>
+  <text x="299" y="165" font-size="11" fill="#a89060" text-anchor="middle" font-weight="bold">Emberwood Village</text>
+  <text x="299" y="200" font-size="8" fill="#7a6a4a" text-anchor="middle">frontier town · adventurer hub</text>
+
+  <!-- Cartographers' Guild outpost (near Shatterlands edge) -->
+  <polygon points="270,160 280,145 290,160" fill="#3a4a5a" stroke="#6a8aaa" stroke-width="1"/>
+  <text x="280" y="138" font-size="9" fill="#6a8aaa" text-anchor="middle">Cartographers' Outpost</text>
+
+  <!-- Pale Flame stronghold (hidden in hills near Shatterlands) -->
+  <rect x="200" y="530" width="16" height="12" fill="#5a2a20" stroke="#8a4a30" stroke-width="1" rx="1"/>
+  <text x="208" y="520" font-size="9" fill="#8a4a30" text-anchor="middle">Pale Flame Keep</text>
+  <text x="208" y="555" font-size="7" fill="#6a3a25" text-anchor="middle">hidden stronghold</text>
+
+  <!-- Ashborn commune (in the Shatterlands, residuum-rich area) -->
+  <circle cx="180" cy="450" r="6" fill="#4a3a5a" stroke="#7a6a8a" stroke-width="1"/>
+  <text x="180" y="475" font-size="9" fill="#8a7a9a" text-anchor="middle">Ashborn Commune</text>
+
+  <!-- Saltmarch villages -->
+  <circle cx="540" cy="610" r="4" fill="#3a5a45" stroke="#5a8a65" stroke-width="0.8"/>
+  <text x="540" y="630" font-size="8" fill="#5a8a65" text-anchor="middle">Reedwatch</text>
+  <circle cx="590" cy="620" r="4" fill="#3a5a45" stroke="#5a8a65" stroke-width="0.8"/>
+  <text x="590" y="640" font-size="8" fill="#5a8a65" text-anchor="middle">Mire's End</text>
+
+  <!-- Pale Reach monastery -->
+  <rect x="280" y="60" width="14" height="10" fill="#5a5a65" stroke="#8a8a95" stroke-width="1" rx="1"/>
+  <text x="287" y="52" font-size="8" fill="#9a9ab0" text-anchor="middle">Greyveil Monastery</text>
+
+  <!-- Old road (Altberg to Hallow's Reach, from the west) -->
+  <path d="M 50,280 Q 200,260 350,270 Q 450,275 575,280" 
+        fill="none" stroke="#5a4a30" stroke-width="2" stroke-dasharray="6,4" opacity="0.5"/>
+  <text x="120" y="270" font-size="8" fill="#5a4a30" text-anchor="middle" opacity="0.6">Old Trade Road</text>
+
+  <!-- Road from Hallow's Reach to Emberwood -->
+  <path d="M 575,275 Q 480,250 400,220 Q 350,200 300,185" 
+        fill="none" stroke="#5a4a30" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.5"/>
+
+  <!-- Road from Hallow's Reach to Saltmarch -->
+  <path d="M 590,300 Q 600,380 580,450 Q 570,520 560,580" 
+        fill="none" stroke="#5a4a30" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.4"/>
+
+  <!-- ========== COMPASS ROSE ========== -->
+  <g transform="translate(920, 620)">
+    <circle cx="0" cy="0" r="30" fill="none" stroke="#4a4a60" stroke-width="1"/>
+    <circle cx="0" cy="0" r="22" fill="none" stroke="#3a3a50" stroke-width="0.5"/>
+    <polygon points="0,-28 -5,-8 0,-12 5,-8" fill="#6a5a35" stroke="#8a7a45" stroke-width="0.5"/>
+    <polygon points="0,28 -5,8 0,12 5,8" fill="#3a3a4a" stroke="#4a4a5a" stroke-width="0.5"/>
+    <text x="0" y="-35" font-size="10" fill="#8a7a50" text-anchor="middle">N</text>
+    <text x="0" y="42" font-size="10" fill="#5a5a6a" text-anchor="middle">S</text>
+    <text x="-35" y="4" font-size="10" fill="#5a5a6a" text-anchor="middle">W</text>
+    <text x="35" y="4" font-size="10" fill="#5a5a6a" text-anchor="middle">E</text>
+  </g>
+
+  <!-- ========== SCALE BAR ========== -->
+  <g transform="translate(60, 660)">
+    <rect x="0" y="0" width="30" height="6" fill="#5a4a30"/>
+    <rect x="30" y="0" width="30" height="6" fill="none" stroke="#5a4a30" stroke-width="1"/>
+    <rect x="60" y="0" width="30" height="6" fill="#5a4a30"/>
+    <text x="0" y="18" font-size="8" fill="#5a4a30" text-anchor="start">0</text>
+    <text x="45" y="18" font-size="8" fill="#5a4a30" text-anchor="middle">5</text>
+    <text x="90" y="18" font-size="8" fill="#5a4a30" text-anchor="middle">10 leagues</text>
+  </g>
+
+  <!-- ========== BORDER DECORATION ========== -->
+  <rect x="2" y="2" width="996" height="696" fill="none" stroke="#2a2a40" stroke-width="2" rx="6"/>
+  <rect x="8" y="8" width="984" height="684" fill="none" stroke="#1a1a30" stroke-width="0.5" rx="4"/>
+
+</svg>
+</div>
+
+<div class="legend">
+  <div class="legend-grid">
+    <div class="legend-item"><div class="legend-swatch" style="background:#4a4a50"></div>The Pale Reach (mountains/ash)</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#2a1510"></div>The Shatterlands (dangerous ruins)</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#1a2a14"></div>Embermoor Plains (grassland)</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#1a2a28"></div>The Saltmarch (wetlands)</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#0a1929"></div>The Wide Sea (ocean)</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#6090d0;opacity:0.4"></div>Residuum deposits (glowing)</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#5a4530"></div>Settlements</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#5a4a30;opacity:0.5"></div>Trade roads (dashed)</div>
+  </div>
+</div>
+
+<div class="footer">
+  The Ember Coast · Region Map of Aethermere · Working Storycraft — Draft v1 · September 2026
+</div>
+
+</body>
+</html>
